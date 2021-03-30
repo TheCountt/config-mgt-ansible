@@ -1,15 +1,6 @@
 # Ansible playbook for standard installations and commands.
 
 
-- hosts: all
-  become: true
-  tasks:	
-   - name: upgrade and update repos
-     apt: upgrade=dist update_cache=yes
-
-   - name: change timezone to West African settings
-     command: timedatectl set-timezone Africa/Lagos
-
 - hosts: webservers
   become: true
   tasks:
