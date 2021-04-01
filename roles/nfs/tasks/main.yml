@@ -1,9 +1,10 @@
 ---
 # tasks file for nfs
 
-# install parted
-- name: install parted
-  package: name=parted state=present
+# install gparted
+- name: install gparted
+  apt-get: name=gparted state=present update_cache=yes
+  become: true
 
  # attachment of volume to instance
 - name: attach volume to nfs instance
