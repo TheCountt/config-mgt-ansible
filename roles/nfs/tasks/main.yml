@@ -1,11 +1,2 @@
 ---
 # tasks file for nfs
-
-# attachment of volume to instance
-
-- amazon.aws.ec2_vol:
-     instance: i-07253dd33ad33afbd
-     volume_size: 7
-     device_name: /dev/xvdf
-     region: us-east-2
-     availability_zone: us-east-2b
