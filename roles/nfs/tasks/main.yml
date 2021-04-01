@@ -2,7 +2,7 @@
 # tasks file for nfs
 
 # install ansible galaxy collections
-- name: install ansible galaxy collections
+- name: install ansible-galaxy collection
   ansible.builtin.package: name={{item}} state=latest
   loop:
     - amazon.aws
