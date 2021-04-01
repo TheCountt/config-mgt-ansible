@@ -1,14 +1,9 @@
 ---
 # tasks file for nfs
 
-# install ansible galaxy collections
-- name: install ansible-galaxy collection
-  ansible.builtin.package: name={{item}} state=latest
-  loop:
-    - amazon.aws
-    - community.general
-    - ansible.posix
-    - ansible.parted
+# install parted
+- name: install parted
+  package: name=parted state=present
 
  # attachment of volume to instance
 - name: attach volume to nfs instance
