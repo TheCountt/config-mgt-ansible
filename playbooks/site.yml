@@ -8,3 +8,6 @@
      command: timedatectl set-timezone Africa/Lagos
 
 - import_playbook: ../static-assignments/common.yml
+
+- hosts: webservers
+- import_playbook: ../static-assignments/webservers.yml
