@@ -5,10 +5,8 @@
   become: true
   tasks:
    - name: installing and updating and repos
-     apt: name={{item}} state=present update_cache=yes
-     with_items: 
-         - nfs-common
-         - apache2
+     apt: name=[ 'nfs-common', 'apache2' ] state=present update_cache=yes
+     
     
    - name: ensure apache2 started
      service: name=apache2 state=started enabled=yes
@@ -48,7 +46,7 @@
   become: true
   tasks:  
    - name: installing and updating repos
-     apt: name={{item}} state=present update_cache=yes
+     apt: name=[ 'nfs-kernel-server', 'lvm2' ] state=present update_cache=yes
      with_items: 
       - nfs-kernel-server
       - lvm2
