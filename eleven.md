@@ -9,14 +9,15 @@
 Create a VM and call it Bastion. It will serve as a client to run ansible scripts.
 
 On the bastion host, create a folder and name it ansible
+
 sudo mkdir ansible
 
-Install Ansible
+### Install Ansible
 
 sudo apt install software-properties-common -y
 sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible -y
-Step 4- Commence Ansible development
+
 
 
 ## Step 3 - Prepare Visual Studio Code for Development(Working with VS Code)
@@ -29,27 +30,34 @@ You can also install on PowerShell. Check the internet on how to go about this.
 After installing both Open SSH Server and Open SSH Client, we need to follow these steps:
 
 Save the SSH key(the AWS Key Pair) into the Local disk(C:) on PC
- C:\Users\Remi\.ssh\AWS KeyPair.pem
+
+C:\Users\Remi\.ssh\AWS KeyPair.pem
 
 - Change directory to where the ssh key is in PowerShell
+ 
  cd C:\Users\Remi\.ssh\
 
 - Commands to run on PowerShell to change the permission of SSH Key
-  $path="./AWS KeyPair.pem"
 
-  #### reset to remove explicit permissions
-  icacls.exe $path /reset
+$path="./AWS KeyPair.pem"
 
-  #### give current user explicit read-permission
-  icacls.exe $path /GRANT:R "$($env:USERNAME):(R)"
+  #### #reset to remove explicit permissions
+ 
+ icacls.exe $path /reset
 
-  #### disable Inheritance and remove inherited permissions
+  #### #give current user explicit read-permission
+
+icacls.exe $path /GRANT:R "$($env:USERNAME):(R)"
+
+  #### #disable Inheritance and remove inherited permissions
+  
   icacls.exe $path /inheritance:r
 
 
 
 - To Establish Connection to EC2 Instance from PowerShell
-  ssh -i "AWS KeyPair" user@hostname
+ 
+ ssh -i "AWS KeyPair" user@hostname
 
 
 If connection is established, then we can connect Visual Studio Code(VSCode) to the remote host. Take the following steps:
@@ -66,6 +74,8 @@ sudo chown -R ubuntu: ansible
 
 
 ------------------------------------------
+
+Step 4- Commence Ansible development
 Go to github. Within the prior git repository we created, create a branch and name it
 
 
