@@ -1,0 +1,8 @@
+---
+- name: general
+  hosts: all
+- import_playbook: ../static-assignments/common.yml
+
+- name: webservers
+  hosts: webservers
+- import_playbook: ../static-assignments/webservers.yml
