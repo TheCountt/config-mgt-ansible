@@ -1,7 +1,7 @@
 ---
 # install ansible galaxy collections
 - name: install ansible galaxy collections
-  ansible.builtin.apt: name={{item}} state=latest
+  ansible.builtin.package: name={{item}} state=latest
   loop:
     - amazon.aws
     - community.general
