@@ -2,7 +2,7 @@
 # tasks file for webserver
 
 - name: install prerequisites
-  apt: name=libxm12-dev update_cache=yes state=latest force_apt_get=yes
+  apt: name=[ 'aptitude' ] update_cache=yes state=latest force_apt_get=yes
 
 
 - name: install apache
