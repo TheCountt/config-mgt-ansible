@@ -17,17 +17,12 @@
 
 - name: Disable default Apache site
   shell: /usr/sbin/a2dissite 000-default.conf
-  notify: Reload Apache
 
 - name: enable new site
   shell: /usr/sbin/a2ensite tooling.conf
-  notify: Reload Apache
 
 - name: allow HTTTP Traffic on port 80
   ufw: rule=allow port="80" proto=tcp state=enabled
-
-- name: reload Apache
-  service: name=apache2 state=reloaded
 
 - name: restart apache2
   service: name=apache2 state=restarted enabled=yes
