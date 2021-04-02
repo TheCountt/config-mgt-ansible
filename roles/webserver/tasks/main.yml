@@ -1,3 +1,39 @@
 ---
 # tasks file for webserver
 
+- name: install prerequisites
+  apt: name=libxm12-dev update_cache=yes state=latest force_apt_get=yes
+
+
+- name: install apache
+  apt: name=apache2 state=present update_cache=yes
+  become: yes
+
+- name: create /var/www/html (Document Root)
+  file: path="/var/www/html" state=directory mode=0755
+  
+
+- name: clone tooling repo
+  git: repo="https://github.com/TheCountt/tooling.git" dest="/home/ubuntu/tooling"
+
+- name: set up Apache virtual Host
+  template: src="apache-conf.j2" dest="/etc/apache2/sites-available/tooling.conf"
+
+- name: Disable default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  when: disable_default
+  notify: Reload Apache
+
+- name: enable new site
+  shell: /usr/sbin/a2ensite tooling.conf
+  notify: Reload Apache
+
+- name: allow HTTTP Traffic on port 80
+  ufw: rule=allow port="80" proto=tcp state=enabled
+
+- name: reload Apache
+  service: name=apache2 state=reloaded
+
+- name: restart apache2
+  service: name=apache2 state=restarted enabled=yes
+  become: yes
