@@ -1,6 +1,5 @@
 - name: general config
   hosts: all
-
 - import_playbook: ../static-assignments/common.yml
 
 - name: webserver config
