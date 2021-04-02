@@ -1,0 +1,86 @@
+---
+# install ansible galaxy collections
+- name: install ansible galaxy collections
+  ansible.builtin.package: name={{item}} state=latest
+  loop:
+    - amazon.aws
+    - community.general
+    - ansible.posix
+    - ansible.parted
+
+ # attachment of volume to instance
+- name: attach volume to nfs instance
+  amazon.aws.ec2_vol: instance="i-07253dd33ad33afbd" volume_size=7 device_name="/dev/xvdf" region=us-east-2
+
+ # physical volume creation
+- name: create a new partition of more than 6 GiB on /dev/xvdf for LVM
+  community.general.parted: device="/dev/xvdf" number=1 flags=[lvm] state=present part_start="0%" part_end="100%"
+
+  # volume group creation
+- name: create a volume group on top of the /dev/xvdf/ with physical extent size of 7g
+  community.general.lvg: vg="nfs-vg" pvs=/dev/xvdf1 pesize=6900 force=no state=present
+
+ # logical volume creation
+- name: create and give names to logical volumes
+  community.general.lvol: vg="nfs-vg" lv={{item}} size=2000 force=no state=present 
+  loop:
+    - apps-lv
+    - logs-lv
+    - opt-lv
+
+  # formatting the lvs with choosen filesystem
+
+- name: create ext4 filesystems on the logical volumes
+  community.general.filesystem: fstype=ext4 dev="dev/nfs-vg/{{item.lv}}" force=no
+  loop:
+    - { lv: 'apps-lv' }
+    - { lv: 'logs-lv' }
+    - { lv: 'opt-lv' }
+
+  # creating directories
+- name: creating directories to mount the filesystems
+  ansible.builtin.file: path={{item}} state=directory mode=0755
+  loop:
+    - /mnt/apps
+    - /mnt/logs
+    - /mnt/opt
+
+  # mounting the filesystems
+- name: mounting the filesystems
+  ansible.posix.mount: path={{item.dir}} src="/dev/nfs-vg/{{item.lv}} state=mounted fstype=nfs
+                       opts=nosuid,noexec,defaults
+  loop:
+    - { dir: '/mnt/apps', lv: 'apps-lv' }
+    - { dir: '/mnt/logs', lv: 'logs-lv' }
+    - { dir: '/mnt/opt', lv: 'opt-lv' }
+  
+
+  # start and enable nfs server
+- name: enable nfs server
+  service: name=nfs-server state=started enabled=yes
+
+  # Configure access to NFS
+- name: mounting exports in /etc/exports file
+  ansible.builtin.template: src=exports-config.j2 dest=/etc/exports owner=root group=root mode=0644
+  
+ # export NFS Shares
+- name: export nfs shares
+  ansible.builtin.command: sudo exportfs -arv
+
+ # clone repo
+- name: Clone tooling repo
+  ansible.builtin.git: repo=https://github.com/TheCountt/tooling.git dest=/home/ubuntu/tooling
+  
+
+ # add nfs port to firewall rules
+- name: allow all access to tcp/udp ports 249 and 111
+  community.general.ufw: rule=allow port={{item.port}} proto=any state=enabled
+  loop:
+    - { port: 2049/tcp }
+    - { port: 2049/udp }
+    - { port: 111/tcp }
+    - { port: 111/udp }
+
+ # reload firewall
+- name: reload ufw
+  ansible.builtin.command: sudo ufw reload
