@@ -1,10 +1,6 @@
 ---
 # tasks file for webserver
 
-- name: install prerequisites
-  apt: name=[ 'aptitude' ] update_cache=yes state=latest force_apt_get=yes
-
-
 - name: install apache
   apt: name=apache2 state=present update_cache=yes
   become: yes
@@ -21,7 +17,6 @@
 
 - name: Disable default Apache site
   shell: /usr/sbin/a2dissite 000-default.conf
-  when: disable_default
   notify: Reload Apache
 
 - name: enable new site
