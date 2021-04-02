@@ -8,8 +8,8 @@
    - name: change timezone to West African settings
      command: timedatectl set-timezone Africa/Lagos
 
-- import_playbook: /home/ubuntu/ansible/static-assignments/common.yml
+- import_playbook: ../static-assignments/common.yml
 
 - name: webserver config
   hosts: webservers
-- import_playbook: /home/ubuntu/ansible/static-assignments/webservers.yml
+- import_playbook: ../static-assignments/webservers.yml
