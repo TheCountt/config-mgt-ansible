@@ -1,7 +1,21 @@
 ---
-# tasks file for nfs
+# install ansible galaxy collections
+- name: install ansible galaxy collections
+  ansible.builtin.apt: name={{item}} state=latest
+  loop:
+    - amazon.aws
+    - community.general
+    - ansible.posix
+    - ansible.parted
 
- 
+ # attachment of volume to instance
+- name: attach volume to nfs instance
+  amazon.aws.ec2_vol: instance="i-07253dd33ad33afbd" volume_size=7 device_name="/dev/xvdf" region=us-east-2
+
+ # physical volume creation
+- name: create a new partition of more than 6 GiB on /dev/xvdf for LVM
+  community.general.parted: device="/dev/xvdf" number=1 flags=[lvm] state=present part_start="0%" part_end="100%"
+
   # volume group creation
 - name: create a volume group on top of the /dev/xvdf/ with physical extent size of 7g
   community.general.lvg: vg="nfs-vg" pvs=/dev/xvdf1 pesize=6900 force=no state=present
