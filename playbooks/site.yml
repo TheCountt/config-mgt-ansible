@@ -18,3 +18,8 @@
 - name: import webservers file
   hosts: webservers
 - import_playbook: ../static-assignments/webservers.yml
+
+- name: import Loadbalancers assignment
+  hosts: lb
+- import_playbook: ../static-assignments/lb.yml
+  when: load_balancer_is_required 
