@@ -73,9 +73,10 @@ To enable Visual Studio Code edit files of remote host,change the ownership of a
 sudo chown -R ubuntu: ansible
 
 
-------------------------------------------
 
-Step 4- Commence Ansible development
+
+## Step 4- Commence Ansible development
+
 Go to github. Within the prior git repository we created, create a branch and name it
 
 
@@ -89,7 +90,8 @@ Within the newly created inventory folder, create an inventory file for each env
 
 
 
-Setting up the Ansible Inventory
+### Setting up the Ansible Inventory
+
 Go to the Bastion/Jumper Server and change directory into ansible
 
 cd ansible
@@ -136,7 +138,7 @@ sudo chmod 400  ~/.ssh/id_rsa
 
 The Ansible inventory file defines the hosts and groups of hosts upon which commands, modules, and tasks in a playbook operate. Since our intention is to execute Linux commands on remote hosts, and ensure that it is the intended configuration on a particular server that occurs. It is important to have a way to organize our hosts in such an Inventory.
 
-Common Playbook
+### Common Playbook
 It is time to start giving Ansible the instructions on what you want to get done, and how you want it.
 
 Within the common.yml playbook created in our Bastion Server, you will write configuration for repeatable , re-usable, and multi-machine tasks that are common to systems within the infrastructure. Therefore this section will run on all hosts.
@@ -160,14 +162,14 @@ Before proceeding further, test reachability to the servers written in the inven
 ansible all -i ansible/inventory/dev -m ping
 
 
-Step 5 - Test Ansible with a Playbook
+## Step 5 - Test Ansible with a Playbook
 
 Now, it is time to execute Ansible and verify if your playbook actually works
 
 ansible-playbook -i inventory/dev  playbooks/common.yml
 
 
-Step 6 - Update GIT with the latest code
+## Step 6 - Update GIT with the latest code
 
 Since Git is already installed in the Bastion Server, change directory into the ansible directory and start a local git repository:
 
@@ -261,7 +263,8 @@ sudo git ls-tree -r --name-only main
 
 
 
-Credits
+## Credits
+
 https://professional-pbl.darey.io/en/latest/project11.html?next=https%3A%2F%2Fprofessional-pbl.darey.io%2Fen%2Flatest%2Fproject11.html&ticket=ST-1616164414-KTMU4o2z2eGeYDCV0NqhGeLNUjVKJ8GT
 
 docs.ansible.com
