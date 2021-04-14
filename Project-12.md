@@ -132,7 +132,7 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 - Within the static-assignments folder, create a new file and name it webservers.yml. This is where you will reference the role.
 
 *---*
-*- hosts: uat-webservers*
+*- hosts: webservers*
   *roles:*
      *- webserver*
      
@@ -144,7 +144,7 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 *- import_playbook: ../static-assignments/common.yml*
 
 *- hosts: webservers*
-*- import_playbook: ../static-assignments/uat-webservers.yml*
+*- import_playbook: ../static-assignments/webservers.yml*
 
 
 ## Step 4 - Commit & Test
