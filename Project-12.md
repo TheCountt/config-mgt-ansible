@@ -122,6 +122,8 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 
 - Make sure apache service is started
     
+    ![{723B55DA-1DE7-4E1D-997B-7FAAA1536AF0} png](https://user-images.githubusercontent.com/76074379/114937909-467ad180-9df3-11eb-90e2-e5013312afbe.jpg)
+    
     
     
 *NOTE: Do not forget to start the instances we created in Project 11. Also, check inventory/dev to make sure the Private IP addresses and other parameters are correct*
@@ -131,10 +133,15 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 
 - Within the static-assignments folder, create a new file and name it webservers.yml. This is where you will reference the role.
 
-*---*
+---
+
 *- hosts: webservers*
   *roles:*
      *- webserver*
+     
+   ![{3715D34C-005D-4FA1-A547-B144809FF93A} png](https://user-images.githubusercontent.com/76074379/114937997-63afa000-9df3-11eb-9a84-cff7c465886d.jpg)
+     
+     
      
 - Remember that the entry point to our ansible configuration is the site.yml file. Therefore, we need to refer ywebservers.yml role inside site.yml. So, we should have this
   in site.yml
@@ -147,6 +154,9 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 *- import_playbook: ../static-assignments/webservers.yml*
 
 
+![{F2D1C8E6-DF72-49C6-90B3-DC24B896FDCF} png](https://user-images.githubusercontent.com/76074379/114938177-a5d8e180-9df3-11eb-9352-3b5a9b0e3456.jpg)
+
+
 ## Step 4 - Commit & Test
 
 - Commit your changes, create a Pull Request and merge them to main branch in Github.
@@ -154,5 +164,11 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 - Now run the playbook against your dev inventory and see what happens:
 
 *sudo ansible-playbook -i /home/ubuntu/ansible/inventory/dev.yml /home/ubuntu/ansible/playbooks/site.yaml*
+
+
+![{B5F83C50-3934-45B4-86CF-2E75594862C6} png](https://user-images.githubusercontent.com/76074379/114938413-f0f2f480-9df3-11eb-8aa9-1f71f08fd035.jpg)
+
+
+
 
 
