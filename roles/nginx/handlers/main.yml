@@ -1,5 +1,2 @@
 ---
 # handlers file for nginx
-handlers:
-    - name: restart nginx
-      service: name=nginx state=restarted
