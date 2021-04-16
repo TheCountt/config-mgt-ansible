@@ -1,5 +1,5 @@
+---
 # Ansible playbook for standard installations and commands.
-
 - hosts: all
   become: true
   tasks:
