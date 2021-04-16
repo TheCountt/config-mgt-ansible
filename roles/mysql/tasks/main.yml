@@ -1,26 +1,52 @@
 ---
-# Variable configuration.
-- include_tasks: variables.yml
+# tasks file for mysql
+- name: Install mysql
+  apt: name=mysql-server state=latest update_cache=yes
 
-# Setup/install tasks.
-- include_tasks: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- name: Ensure MySQL is running.
+  service: name=mysql state=started enabled=yes
 
-- include_tasks: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: delete file if it exists
+  file: path="/etc/mysql/mysql.conf.d/mysqld.cnf" state=absent
 
-- include_tasks: setup-Archlinux.yml
-  when: ansible_os_family == 'Archlinux'
+- name: Copy my.cnf global MySQL configuration.
+  template:
+    src: "templates/my.cnf"
+    dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    owner: root
+    group: root
+    mode: 0644
+  
+- name: Ensure MySQL is running.
+  service: name=mysql state=restarted enabled=yes
 
-- name: Check if MySQL packages were installed.
-  set_fact:
-    mysql_install_packages: "{{ (rh_mysql_install_packages is defined and rh_mysql_install_packages.changed)
-      or (deb_mysql_install_packages is defined and deb_mysql_install_packages.changed)
-      or (arch_mysql_install_packages is defined and arch_mysql_install_packages.changed) }}"
+- name: Ensure default user is present.
+  mysql_user:
+    name: "local"
+    host: 'localhost'
+    password: "12qwas!@"
+    priv: '*.*:ALL,GRANT'
+    state: present
 
-# Configure MySQL.
-- include_tasks: configure.yml
-- include_tasks: secure-installation.yml
-- include_tasks: databases.yml
-- include_tasks: users.yml
-- include_tasks: replication.yml
+
+- name: Ensure MySQL users are present.
+  mysql_user:
+    name: webaccess
+    host: 172.31.16.0/20
+    password: "12qwe@!"
+    priv: "*.*:ALL"
+    state: present
+
+
+- name: Create a new database with name 'tooling'
+  mysql_db:
+    login_user: webaccess
+    login_password: "12qwe@!"
+    name: tooling
+    state: present
+
+
+
+
+- name: Ensure MySQL is started and enabled on boot.
+  service: name=mysql state=started enabled=yes

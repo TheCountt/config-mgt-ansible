@@ -1,5 +1,0 @@
----
-- name: Clone a repo
-  ansible.builtin.git:
-    repo: https://github.com/TheCountt/tooling.git
-    dest: /home/ubuntu/tooling
