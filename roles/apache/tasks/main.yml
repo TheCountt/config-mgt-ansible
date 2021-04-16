@@ -1,0 +1,62 @@
+---
+# tasks file for apache
+- name: install apache
+  become: yes
+  apt: name=apache2 state=latest update_cache=yes
+
+- name: install apache dependency
+  become: yes
+  apt: name=libxml2-dev state=latest update_cache=yes
+
+- name: enable module a2enmod
+  become: yes
+  command: a2enmod rewrite
+
+- name: enable proxy
+  become: yes
+  command: a2enmod proxy
+
+- name: enable proxy balancer
+  become: yes
+  command: a2enmod proxy_balancer
+
+- name: enable proxy http
+  become: yes
+  command: a2enmod proxy_http
+
+- name: enable headers
+  become: yes
+  command: a2enmod headers
+
+- name: enable libmethod bytraffic
+  become: yes
+  command: a2enmod libmethod_bytraffic
+
+- name: enter and configure nginx conf file
+  become: yes
+  blockinfile:
+     path: /etc/apache2/sites-available/000-default.conf
+     marker: ""
+     block: | 
+       <VirtualHost *:80>
+       ServerAdmin webmaster@localhost
+       ServerName {{ http_host }}
+       ServerAlias www.{{ http_host }}
+       DocumentRoot /var/www/{{ http_host }}
+       <proxy balancer://load-web>
+       BalancerMember http://172.31.20.138
+       BalancerMember http://172.31.21.13
+        
+       ProxySet lbmethod=bytraffic
+       </proxy>
+       ProxyPass "/" "balancer://load-web/"
+       ProxyPassReverse "/" "balancer://load-web/"
+       ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+       </VirtualHost>
+
+
+ 
+- name: ensure apache is running
+  become: yes
+  service: name=apache2 state=restarted enabled=yes
