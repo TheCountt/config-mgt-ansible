@@ -117,7 +117,7 @@ mysql_users:
    - name: webaccess
      host: '%'
      password: password
-     priv: *.*:'ALL,GRANT'
+     priv: '*.*:ALL,GRANT'
 
 # Replication settings (replication is only enabled if master/user have values).
 mysql_server_id: "1"
