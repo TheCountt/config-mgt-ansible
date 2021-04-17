@@ -1,6 +1,6 @@
 ---
 # Ansible playbook for standard installations and commands.
-- hosts: all
+- hosts: nfs,webservers,lb
   become: true
   tasks:
    - name: installing and updating repos
@@ -11,6 +11,18 @@
 
    - name: ensure ntp is running 
      service: name=ntp state=started enabled=yes
+
+- hosts: db
+  become: true
+  tasks:
+   - name: installing and updating repos
+     dnf: update_cache=yes state=present
+
+   - name: ensure ntp is installed
+     dnf: name=chrony state=present
+
+   - name: ensure ntp is running 
+     service: name=chronyd state=started enabled=yes
 
 # - hosts: jenkins
 #   tasks:
