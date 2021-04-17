@@ -1,7 +1,0 @@
----
-# vars file for mysql
-  name: Create a database
-  hosts: db
-  vars:
-    mysql_root_password: my-own
-    mysql_user_password: Passw0rd

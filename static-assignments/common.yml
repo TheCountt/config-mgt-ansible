@@ -1,6 +1,6 @@
 ---
 # Ansible playbook for standard installations and commands.
-- hosts: nfs,webservers,lb
+- hosts: nfs,webservers
   become: true
   tasks:
    - name: installing and updating repos
@@ -12,7 +12,7 @@
    - name: ensure ntp is running 
      service: name=ntp state=started enabled=yes
 
-- hosts: db
+- hosts: db,lb
   become: true
   tasks:
    - name: installing and updating repos
