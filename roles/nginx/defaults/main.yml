@@ -39,22 +39,22 @@ nginx_client_max_body_size: "64m"
 
 nginx_server_names_hash_bucket_size: "64"
 
-nginx_proxy_cache_path: ""
+nginx_proxy_cache_path: "/var/cache/nginx keys_zone=cache:32m"
 
-nginx_extra_conf_options: ""
-# Example extra main options, used within the main nginx's context:
-#   nginx_extra_conf_options: |
-#     env VARIABLE;
-#     include /etc/nginx/main.d/*.conf;
+nginx_extra_conf_options:
+ Example extra main options, used within the main nginx's context:
+   nginx_extra_conf_options: |
+     env VARIABLE;
+     include /etc/nginx/main.d/*.conf;
 
-nginx_extra_http_options: ""
-# Example extra http options, printed inside the main server http config:
-#    nginx_extra_http_options: |
-#      proxy_buffering    off;
-#      proxy_set_header   X-Real-IP $remote_addr;
-#      proxy_set_header   X-Scheme $scheme;
-#      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-#      proxy_set_header   Host $http_host;
+nginx_extra_http_options:
+ Example extra http options, printed inside the main server http config:
+    nginx_extra_http_options: |
+      proxy_buffering    off;
+      proxy_set_header   X-Real-IP $remote_addr;
+      proxy_set_header   X-Scheme $scheme;
+      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header   Host $http_host;
 
 nginx_remove_default_vhost: false
 
@@ -62,12 +62,12 @@ nginx_remove_default_vhost: false
 nginx_listen_ipv6: true
 
 nginx_vhosts: []
-# Example vhost below, showing all available options:
-# - listen: "80" # default: "80"
-#   server_name: "example.com" # default: N/A
-#   root: "/var/www/example.com" # default: N/A
-#   index: "index.html index.htm" # default: "index.html index.htm"
-#   filename: "example.com.conf" # Can be used to set the vhost filename.
+#  Example vhost below, showing all available options:
+#  - listen: "80" # default: "80"
+#    server_name: "ec2-3-142-52-67.us-east-2.compute.amazonaws.com" # default: N/A
+#    root: "/var/www/ec2-3-142-52-67.us-east-2.compute.amazonaws.com" # default: N/A
+#    index: "index.html index.htm" # default: "index.html index.htm"
+#    filename: "ec2-3-142-52-67.us-east-2.compute.amazonaws.com.com.conf" # Can be used to set the vhost filename.
 #
 #   # Properties that are only added if defined:
 #   server_name_redirect: "www.example.com" # default: N/A
@@ -78,16 +78,16 @@ nginx_vhosts: []
 #   template: "" # Can be used to override the `nginx_vhost_template` per host.
 #   state: "absent" # To remove the vhost configuration.
 
-nginx_upstreams: []
-# - name: myapp1
-#   strategy: "ip_hash" # "least_conn", etc.
-#   keepalive: 16 # optional
-#   servers: {
-#     "srv1.example.com",
-#     "srv2.example.com weight=3",
-#     "srv3.example.com"
-#   }
-
+nginx_upstreams:
+ - name: myapp1
+   strategy: "ip_hash" # "least_conn", etc.
+   keepalive: 16 # optional
+   servers: {
+     "web1 weight=3",
+     "web2 weight=3",
+     "proxy_pass http://myapp1"
+   }
+   
 nginx_log_format: |-
   '$remote_addr - $remote_user [$time_local] "$request" '
   '$status $body_bytes_sent "$http_referer" '
