@@ -57,21 +57,37 @@ For this reason, we will now create a folder to keep each environment’s variab
 Your layout should now look like this.
 
 ├── dynamic-assignments
-│   └── env-vars.yml
+
+    └── env-vars.yml
+   
 ├── env-vars
+
     └── dev.yml
+    
     └── stage.yml
+    
     └── uat.yml
+    
     └── prod.yml
+    
 ├── inventory
+
     └── dev
+    
     └── stage
+    
     └── uat
+    
     └── prod
+    
 ├── playbooks
+
     └── site.yml
+    
 └── static-assignments
+
     └── common.yml
+    
     └── webservers.yml
 Now paste the instruction below into the env-vars.yml file.
 
