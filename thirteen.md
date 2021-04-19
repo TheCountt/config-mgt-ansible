@@ -25,18 +25,31 @@ Create a new folder, name it dynamic-assignments. Then inside this folder, creat
 Your GitHub should have the following structure:
 
 ├── dynamic-assignments
-│   └── env-vars.yml
+
+    └── env-vars.yml
+
 ├── inventory
-│   └── dev
+
+    └── dev
+    
     └── stage
+    
     └── uat
+    
     └── prod
+    
 └── playbooks
+
     └── site.yml
 └── roles (optional folder)
+
     └──...(optional subfolders & files)
+    
 └── static-assignments
+
     └── common.yml
+    
+    
 Since we will be using the same Ansible to configure multiple environments, and each of these environments will have certain unique attributes, such as servername, ip-address etc., we will need a way to set values to variables per specific environment.
 
 For this reason, we will now create a folder to keep each environment’s variables file. Therefore, create a new folder env-vars, then for each environment, create new YAML files which we will use to set variables.
