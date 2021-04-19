@@ -19,7 +19,7 @@ statements encountered during execution will be used.
 Take note that in most cases it is recommended to use static assignments for playbooks, because it is more reliable. With dynamic ones, it is hard to debug playbook problems due
 to its dynamic nature. However, you can use dynamic assignments for environment specific variables as we will be introducing in this project.
 
-In your https://github.com/<your-name>/ansible-config-mgt GitHub repository start a new branch and call it dynamic-assignments.
+In the  GitHub repository we have been usong since Project 11, start a new branch and give it a new name( named mine *thirteen* ).
 
 Create a new folder, name it dynamic-assignments. Then inside this folder, create a new file and name it env-vars.yml. We will instruct site.yml to include this playbook later.
 For now, let us keep building up the structure.
