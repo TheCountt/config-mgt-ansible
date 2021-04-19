@@ -40,9 +40,9 @@
 - name: Configure Apache.
   include_tasks: "configure-{{ ansible_os_family }}.yml"
 
-- name: Ensure Apache has selected state and enabled on boot.
-  become: yes
-  service:
-    name: "{{ apache_service }}"
-    state: "{{ apache_state }}"
-    enabled: true
+# - name: Ensure Apache has selected state and enabled on boot.
+#   become: yes
+#   service:
+#     name: "{{ apache_service }}"
+#     state: "{{ apache_state }}"
+#     enabled: yes
