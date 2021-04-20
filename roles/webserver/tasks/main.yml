@@ -21,7 +21,7 @@
 - name: enable new site
   shell: /usr/sbin/a2ensite tooling.conf
 
-- name: allow HTTTP Traffic on port 80
+- name: allow HTTTP Traffic on port 22
   ufw: rule=allow port="22" proto=tcp state=enabled
 
 - name: allow HTTTP Traffic on port 80
