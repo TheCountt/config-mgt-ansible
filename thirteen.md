@@ -208,29 +208,55 @@ We want to be able to choose which Load Balancer to use, Nginx or Apache, so we 
 
 
 
-Decide if you want to develop your own roles, or find available ones from the community
-Update both static-assignment and site.yml files to refer the roles
+Now, we can either develop your own roles, or find available ones from the community(galaxy.ansible.com) and follow the instructions in their respective README.md files
+
+Update both *static-assignments* and *site.yml* files to refer the roles
 
 
-Important Hints:
+## Important Hints:
 
-Since you cannot use both Nginx and Apache load balancer, you need to add a condition to enable either one - this is where you can make use of variables.
-Declare a variable in defaults/main.yml file inside the Nginx and Apache roles. Name each variables enable_nginx_lb and enable_apache_lb respectively.
-Set both values to false like this enable_nginx_lb: false and enable_apache_lb: false.
-Declare another variable in both roles load_balancer_is_required and set its value to false as well
+Since you cannot use both Nginx and Apache load balancer, you need to add a condition to enable either one - this is where you can make use of variables. Declare a variable in 
+
+*defaults/main.yml* file inside the Nginx and Apache roles. Name each variables *enable_nginx_lb* and *enable_apache_lb* respectively. Set both values to false like this 
+
+*enable_nginx_lb: false* and *enable_apache_lb: false*. Declare another variable in both roles *load_balancer_is_required* and set its value to false as well
+
+For Nginx LB
+
+enable_nginx_lb: false
+
+load_balancer_is_required: false
+
+For Apache LB
+
+enable_apache_lb: false
+
+load_balancer_is_required: false
+
 Update both assignment and site.yml files respectively
-loadbalancers.yml file
+
+
+*loadbalancers.yml* file
 
 - hosts: lb
-  roles:
-    - { role: nginx, when: enable_nginx_lb and load_balancer_is_required }
-    - { role: apache, when: enable_apache_lb and load_balancer_is_required }
-site.yml file
 
-     - name: Loadbalancers assignment
-       hosts: lb
-         - import_playbook: ../static-assignments/loadbalancers.yml
-        when: load_balancer_is_required 
+  roles:
+  
+    - { role: nginx, when: enable_nginx_lb and load_balancer_is_required }
+    
+    - { role: apache, when: enable_apache_lb and load_balancer_is_required }
+
+
+*site.yml* file
+
+   - name: Loadbalancers assignment
+   
+     hosts: lb
+     
+     import_playbook: ../static-assignments/lb.yml
+     
+     when: load_balancer_is_required 
+        
 Now you can make use of env-vars\uat.yml file to define which loadbalancer to use in UAT environment by setting respective environmental variable to true.
 
 You will activate load balancer, and enable nginx by setting these in the respective environment’s env-vars file.
