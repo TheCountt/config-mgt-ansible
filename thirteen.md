@@ -1,6 +1,9 @@
 # Ansible Dynamic Assignments (Include) and Community Roles
 
+## Hint: Always add and commit every little change to Github to avoid Merge Hell. Once you are done and satisfied with your code you can push to Github and create a pull request to merge with the main branch
+
 In this project(which is a continuation of Project 12) we will be introduced to dynamic assignments by using include module.
+
 What is the difference between static and dynamic assignments?
 
 Static assignments use import Ansible module while Dynamic assignments use include Ansible module.
@@ -8,6 +11,7 @@ Static assignments use import Ansible module while Dynamic assignments use inclu
 Hence,
 
 import = Static
+
 include = Dynamic
 
 When the import module is used, all statements are pre-processed at the time playbooks are parsed. This means that when you execute site.yml playbook, Ansible will process all the playbooks referenced during the time it is parsing the statements. This also means that, during actual execution, if any statement changes, such statements will not be considered. Hence, it is static.
@@ -90,7 +94,7 @@ Your layout should now look like this.
     
     └── webservers.yml
 
-Now paste the instruction below into the env-vars.yml file.
+Now paste the instruction below into the *env-vars.yml* file.
 
 ---
 - name: collate variables from env specific file, if it exists
@@ -132,27 +136,19 @@ In the same version, variants of import were also introduced, such as:
 - import_tasks
 
 
-We made use of a special variables *{{ playbook_dir }}* and *{{ inventory_file }}*. *{{ playbook_dir }}* will help 
+We made use of a special variables *{{ playbook_dir }}* and *{{ inventory_file }}*. *{{ playbook_dir }}* will help  Ansible to determine the location of the running playbook, 
 
-Ansible to determine the location of the running playbook, and from there navigate to other path on the filesystem.
-
-*{{ inventory_file }}* on the other hand will dynamically resolve to the name of the inventory file being used, then
+and from there navigate to other path on the filesystem. *{{ inventory_file }}* on the other hand will dynamically resolve to the name of the inventory file being used, then
 
 append *.yml* so that it picks up the required file within the *env-vars* folder.
 
 
+We are including the variables using a loop. *with_first_found* implies that, looping through the list of files, the first one found is used. This is good so that we can always 
 
-We are including the variables using a loop. *with_first_found* implies that, looping through the list of files, the
-
-first one found is used. This is good so that we can always set default values in case an environment specific env 
-
-file does not exist.
+set default values in case an environment specific env file does not exist.
 
 Update *site.yml* with dynamic assignments
 
-Update *site.yml* file to make use of the dynamic assignment. (At this point, we cannot test it yet. We are just 
-
-setting the stage for what is yet to come. So hang on to your hats)
 
 *site.yml* should now look like this.
 
@@ -176,19 +172,16 @@ setting the stage for what is yet to come. So hang on to your hats)
 
 ## Community Roles
 
-Now it is time to create a role for MySQL database - it should install the MySQL package, create a database and 
+Now it is time to create a role for MySQL database - it should install the MySQL package, create a database and configure users. There are tons of roles that have already been 
 
-configure users. There are tons of roles that have already been developed by other open source engineers out there.
+developed by other open source engineers out there. These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy, we can 
 
-These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy, we 
-
-can simply download a ready to use ansible role, and keep going.
+simply download a ready to use ansible role, and keep going.
 
 ## Download Mysql Ansible Role
 
-You can browse available community roles at *galaxy.ansible.com*
+You can browse available community roles at *galaxy.ansible.com* We will be using a MySQL role developed by *geerlingguy*.
 
-We will be using a MySQL role developed by *geerlingguy*.
 
 Go to *config-mgt-ansible/roles* directory and run command:
 
@@ -198,6 +191,7 @@ Read the  README.md file, and edit roles configuration to use correct credential
 
 
 ## Load Balancer Roles
+
 We want to be able to choose which Load Balancer to use, Nginx or Apache, so we need to have two roles respectively:
 
 - Nginx
