@@ -280,6 +280,23 @@ enable_nginx_lb: true
 
 load_balancer_is_required: true
 
+
+![{48D15B24-0CE2-42D9-B058-288F6889183D} png](https://user-images.githubusercontent.com/76074379/115362278-36a61900-a176-11eb-9725-7d806d9d4649.jpg)
+
+
+
+To test this, change the directory to *config-mgt-ansible*, you can update inventory for each environment and run Ansible against each environment.
+
+*cd confiig-mgt-ansible*
+
+*ansible-playbooks -i inventory/uat playybooks/site.yml*
+
+
+![{67C1A259-C7D4-4F1C-8A7B-0D9C393BAFF3} png](https://user-images.githubusercontent.com/76074379/115362651-9a304680-a176-11eb-9e22-b2b7327a6e58.jpg)
+
+
+*Note: The skipped parts of the play is for apache LB which is not enabled and needless configuration of MySQL*
+
 The same must work with apache LB, so you can switch it by setting respective environmental variable to true and nginx to false.
 
 enable_apache_lb: true
@@ -293,3 +310,7 @@ To test this, change the directory to *config-mgt-ansible*, you can update inven
 
 *ansible-playbooks -i inventory/uat playybooks/site.yml*
 
+![{5280150B-FCC4-45D6-856E-B9D8632CD7F0} png](https://user-images.githubusercontent.com/76074379/115363043-f4310c00-a176-11eb-85d0-c6d29971138e.jpg)
+
+
+*Note: The skipped parts of the play is for apache LB which is not enabled and needless configuration of MySQL*
