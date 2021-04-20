@@ -22,7 +22,7 @@ statements encountered during execution will be used.
 Take note that in most cases it is recommended to use static assignments for playbooks, because it is more reliable. With dynamic ones, it is hard to debug playbook problems due
 to its dynamic nature. However, you can use dynamic assignments for environment specific variables as we will be introducing in this project.
 
-In the  GitHub repository we have been usong since Project 11, start a new branch and give it a new name( named mine *thirteen* ).
+In the  GitHub repository we have been using since Project 11, start a new branch and give it a new name( named mine *thirteen* ).
 
 Create a new folder, name it dynamic-assignments. Then inside this folder, create a new file and name it *env-vars.yml*. We will instruct *site.yml* to include this playbook later. For now, let us keep building up the structure.
 
@@ -56,7 +56,7 @@ Your GitHub should have the following structure:
     
 Since we will be using the same Ansible to configure multiple environments, and each of these environments will have certain unique attributes, such as servername, ip-address etc., we will need a way to set values to variables per specific environment.
 
-For this reason, we will now create a folder to keep each environment’s variables file. Therefore, create a new folder env-vars, then for each environment, create new YAML files which we will use to set variables.
+For this reason, we will now create a folder to keep each environment’s variables file. Therefore, create a new folder *env-vars*, then for each environment, create new YAML files which we will use to set variables.
 
 Your layout should now look like this.
 
@@ -96,7 +96,7 @@ Your layout should now look like this.
 
 Now paste the instruction below into the *env-vars.yml* file.
 
----
+
 - name: collate variables from env specific file, if it exists
 
   hosts: all
@@ -114,6 +114,9 @@ Now paste the instruction below into the *env-vars.yml* file.
             - "{{ playbook_dir }}/../env-vars"
       tags:
         - always
+
+
+![{F2FA9692-264D-402A-94EE-6636C1C90EFE} png](https://user-images.githubusercontent.com/76074379/115360422-753ad400-a174-11eb-9794-3647164985a0.jpg)
 
 
 Notice 3 things to notice here:
