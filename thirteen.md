@@ -338,4 +338,13 @@ To test this, change the directory to *config-mgt-ansible*, you can update inven
 ![{5280150B-FCC4-45D6-856E-B9D8632CD7F0} png](https://user-images.githubusercontent.com/76074379/115363043-f4310c00-a176-11eb-85d0-c6d29971138e.jpg)
 
 
-*Note: The skipped parts of the play is for apache LB which is not enabled and needless configuration of MySQL*
+*Note: The skipped parts of the play is for nginx LB which is not enabled and needless configuration of MySQL*
+
+
+## Credit
+
+https://professional-pbl.darey.io/en/latest/project13.html
+
+https://galaxy.ansible.com/nginxinc/nginx
+
+https://galaxy.ansible.com/apache
