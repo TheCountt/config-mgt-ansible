@@ -114,11 +114,9 @@ Now paste the instruction below into the env-vars.yml file.
 
 Notice 3 things to notice here:
 
-We used include_vars syntax instead of include, this is because Ansible developers decided to separate different 
+We used include_vars syntax instead of include, this is because Ansible developers decided to separate different features of the module. From Ansible version 2.8, the include 
 
-features of the module. From Ansible version 2.8, the include module is deprecated and variants of *include_* must be 
-
-used. These are:
+module is deprecated and variants of *include_* must be used. These are:
 
 - include_role
 
@@ -257,13 +255,24 @@ Update both assignment and site.yml files respectively
      
      when: load_balancer_is_required 
         
-Now you can make use of env-vars\uat.yml file to define which loadbalancer to use in UAT environment by setting respective environmental variable to true.
+Now you can make use of *env-vars\uat.yml* file to define which loadbalancer to use in UAT environment by setting respective environmental variable to true.
 
 You will activate load balancer, and enable nginx by setting these in the respective environment’s env-vars file.
 
 enable_nginx_lb: true
-load_balancer_is_required: true
-The same must work with apache LB, so you can switch it by setting respective environmental variable to true and other to false.
 
-To test this, you can update inventory for each environment and run Ansible against each environment.
+load_balancer_is_required: true
+
+The same must work with apache LB, so you can switch it by setting respective environmental variable to true and nginx to false.
+
+enable_apache_lb: true
+
+load_balancer_is_required: true
+
+
+To test this, change the directory to *config-mgt-ansible*, you can update inventory for each environment and run Ansible against each environment.
+
+*cd confiig-mgt-ansible*
+
+*ansible-playbooks -i inventory/uat playybooks/site.yml*
 
