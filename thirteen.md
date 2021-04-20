@@ -121,9 +121,9 @@ Now paste the instruction below into the *env-vars.yml* file.
 
 Notice 3 things to notice here:
 
-We used include_vars syntax instead of include, this is because Ansible developers decided to separate different features of the module. From Ansible version 2.8, the include 
+We used *include_vars* syntax instead of *include*, this is because Ansible developers decided to separate different features of the module. From Ansible version 2.8, the 
 
-module is deprecated and variants of *include_* must be used. These are:
+include module is deprecated and variants of *include_* must be used. These are:
 
 - include_role
 
@@ -208,6 +208,12 @@ Now, we can either develop your own roles, or find available ones from the commu
 Update both *static-assignments* and *site.yml* files to refer the roles
 
 
+![{05FBA126-D888-4B78-A24C-454E29C67807} png](https://user-images.githubusercontent.com/76074379/115361365-5d178480-a175-11eb-9bb6-4ee7264b33e8.jpg)
+
+
+![{68E9DAD2-DF85-4836-B02C-671929CCC6F3} png](https://user-images.githubusercontent.com/76074379/115361096-188be900-a175-11eb-8e42-d2b0ec89bd64.jpg)
+
+
 ## Important Hints:
 
 Since you cannot use both Nginx and Apache load balancer, you need to add a condition to enable either one - this is where you can make use of variables. Declare a variable in 
@@ -222,16 +228,24 @@ enable_nginx_lb: false
 
 load_balancer_is_required: false
 
+
+![{948DE440-2C7A-4E90-9AC6-90FFF63DA5CE} png](https://user-images.githubusercontent.com/76074379/115361519-820bf780-a175-11eb-9165-ea5d644eb535.jpg)
+
+
 For Apache LB
 
 enable_apache_lb: false
 
 load_balancer_is_required: false
 
-Update both assignment and site.yml files respectively
+
+![{59CC360E-5EF2-434F-83EB-6E8CE15976E4} png](https://user-images.githubusercontent.com/76074379/115361824-ce573780-a175-11eb-83fa-742755032309.jpg)
 
 
-*loadbalancers.yml* file
+Update both *static-assignments* and *site.yml* files respectively
+
+
+*lb.yml* file
 
 - hosts: lb
 
@@ -241,6 +255,8 @@ Update both assignment and site.yml files respectively
     
     - { role: apache, when: enable_apache_lb and load_balancer_is_required }
 
+
+![{05FBA126-D888-4B78-A24C-454E29C67807} png](https://user-images.githubusercontent.com/76074379/115361365-5d178480-a175-11eb-9bb6-4ee7264b33e8.jpg)
 
 *site.yml* file
 
@@ -252,6 +268,10 @@ Update both assignment and site.yml files respectively
      
      when: load_balancer_is_required 
         
+        
+![{68E9DAD2-DF85-4836-B02C-671929CCC6F3} png](https://user-images.githubusercontent.com/76074379/115361096-188be900-a175-11eb-8e42-d2b0ec89bd64.jpg)
+
+
 Now you can make use of *env-vars\uat.yml* file to define which loadbalancer to use in UAT environment by setting respective environmental variable to true.
 
 You will activate load balancer, and enable nginx by setting these in the respective environment’s env-vars file.
