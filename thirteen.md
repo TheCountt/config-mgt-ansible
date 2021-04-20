@@ -99,35 +99,36 @@ Your layout should now look like this.
 Now paste the instruction below into the *env-vars.yml* file.
 
 *---*
-* - name: collate variables from env specific file, if it exists*
+
+*- name: collate variables from env specific file, if it exists*
 
   *hosts: all*
 
- * tasks:*
+ *tasks:*
  
-   * - name: looping through list of available files*
+   *- name: looping through list of available files*
    
-     *include_vars: "{{ item }}"*
+     include_vars: "{{ item }}"
      
-      *with_first_found:*
+      with_first_found:
       
-         * - files:*
+         - files:
         
-            * - uat.yml*
+            - uat.yml
             
-            * - prod.yml*
+            - prod.yml
             
-            * - stage.yml*
+            - stage.yml
             
-            * - dev.yml*
+            - dev.yml
             
-          *paths:*
+          paths:
           
-            * - "{{ playbook_dir }}/../env-vars"*
+            - "{{ playbook_dir }}/../env-vars"
            
-      *tags:*
+      tags:
       
-         * - always*
+         - always
 
 
 ![{F2FA9692-264D-402A-94EE-6636C1C90EFE} png](https://user-images.githubusercontent.com/76074379/115360422-753ad400-a174-11eb-9794-3647164985a0.jpg)
@@ -171,20 +172,21 @@ Update *site.yml* with dynamic assignments
 
 *---*
 
-* - name: Include dynamic variables*
+ *- name: Include dynamic variables*
 
    *hosts: all*
 
    *tasks:*
   
-    * - import_playbook: ../static-assignments/common.yml*
+      - import_playbook: ../static-assignments/common.yml
     
-    * - include_playbook: ../dynamic-assignments/env-vars.yml*
+      - include_playbook: ../dynamic-assignments/env-vars.yml
 
   *tags:*
-    * - always*
+  
+      - always
 
-* - name: Webserver assignment*
+ *- name: Webserver assignment*
 
    *hosts: webservers*
 
@@ -270,26 +272,26 @@ Update both *static-assignments* and *site.yml* files respectively
 
 *lb.yml* file
 
-* - hosts: lb*
+ *- hosts: lb*
 
    *roles:*
   
-    * - { role: nginx, when: enable_nginx_lb and load_balancer_is_required }*
+    - { role: nginx, when: enable_nginx_lb and load_balancer_is_required }
     
-    * - { role: apache, when: enable_apache_lb and load_balancer_is_required }*
+    - { role: apache, when: enable_apache_lb and load_balancer_is_required }
 
 
 ![{05FBA126-D888-4B78-A24C-454E29C67807} png](https://user-images.githubusercontent.com/76074379/115361365-5d178480-a175-11eb-9bb6-4ee7264b33e8.jpg)
 
 *site.yml* file
 
-   * - name: Loadbalancers assignment*
+   *- name: Loadbalancers assignment*
    
-     * hosts: lb*
+     hosts: lb
      
-     * import_playbook: ../static-assignments/lb.yml*
+     import_playbook: ../static-assignments/lb.yml
      
-      *when: load_balancer_is_required* 
+     when: load_balancer_is_required
         
         
 ![{68E9DAD2-DF85-4836-B02C-671929CCC6F3} png](https://user-images.githubusercontent.com/76074379/115361096-188be900-a175-11eb-8e42-d2b0ec89bd64.jpg)
