@@ -19,10 +19,10 @@
    - name: installing and updating repos
      dnf: update_cache=yes state=present
 
-   - name: ensure ntp is installed
+   - name: ensure chronyd is installed
      dnf: name=chrony state=present
 
-   - name: ensure ntp is running 
+   - name: ensure chronyd is running 
      service: name=chronyd state=started enabled=yes
 
 
