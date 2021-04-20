@@ -22,6 +22,9 @@
   shell: /usr/sbin/a2ensite tooling.conf
 
 - name: allow HTTTP Traffic on port 80
+  ufw: rule=allow port="22" proto=tcp state=enabled
+
+- name: allow HTTTP Traffic on port 80
   ufw: rule=allow port="80" proto=tcp state=enabled
 
 - name: restart apache2
