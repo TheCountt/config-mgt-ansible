@@ -1,6 +1,8 @@
 # Ansible Dynamic Assignments (Include) and Community Roles
 
-## Hint: Always add and commit every little change to Github to avoid Merge Hell. Once you are done and satisfied with your code you can push to Github and create a pull request to merge with the main branch
+## Hint: Always add and commit every little change to Github to avoid Merge Hell. Once you are done and satisfied with your code you can push to Github and create a pull request to merge with the main branch.
+
+## *Please check ansible-config-mgt repository to view code*
 
 In this project(which is a continuation of Project 12) we will be introduced to dynamic assignments by using include module.
 
