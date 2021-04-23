@@ -1,10 +1,23 @@
-- hosts: all
-  become: true
-  tasks:	
-   - name: upgrade and update repos
-     apt: upgrade=dist update_cache=yes
+---
+- name: Include dynamic variables 
+  hosts: all
 
-   - name: change timezone to West African settings
-     command: timedatectl set-timezone Africa/Lagos
+- name: import common file
+  import_playbook: ../static-assignments/common.yml
+  tags:
+    - always
 
-- import_playbook: ../static-assignments/common.yml
+- name: include env-vars file
+  import_playbook: ../dynamic-assignments/env-vars.yml
+  tags:
+    - always
+
+- name: import database file
+  import_playbook: ../static-assignments/db.yml
+
+- name: import webservers file
+  import_playbook: ../static-assignments/webservers.yml
+
+- name: import Loadbalancers assignment
+  import_playbook: ../static-assignments/lb.yml
+  when: load_balancer_is_required 

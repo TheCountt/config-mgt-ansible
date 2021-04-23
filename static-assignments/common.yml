@@ -1,0 +1,68 @@
+---
+# Ansible playbook for standard installations and commands.
+- hosts: nfs,webservers
+  become: true
+  tasks:
+   - name: installing and updating repos
+     apt: update_cache=yes state=present
+
+   - name: ensure ntp is installed
+     apt: name=ntp state=present
+
+   - name: ensure ntp is running 
+     service: name=ntp state=started enabled=yes
+
+- hosts: db,lb
+  become: true
+  tasks:
+   - name: installing and updating repos
+     dnf: update_cache=yes state=present
+
+   - name: ensure ntp is installed
+     dnf: name=chrony state=present
+
+   - name: ensure ntp is running 
+     service: name=chronyd state=started enabled=yes
+
+# - hosts: jenkins
+#   tasks:
+#    - name: install wget
+#      apt: name=wget state=present update_cache=yes
+#      become: true
+     
+#    - name: install default-jdk-headless
+#      apt: name=default-jdk-headless state=present update_cache=yes
+#      become: true
+ 
+#    - name: installing jenkins apt repository key
+#      apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+#      become: true 
+   
+#    - name: ensure the repository is configured
+#      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+#      become: true
+
+#    - name: installing jenkins
+#      apt: name=jenkins update_cache=yes
+#      become: true
+
+#    - name: ensure jenkins is running
+#      service: name=jenkins state=started
+
+# - hosts: nfs
+#   become: true
+#   tasks:  
+#    - name: installing and updating repos
+#      apt: name={{item}} state=present update_cache=yes
+#      with_items: 
+#       - nfs-kernel-server
+#       - lvm2
+
+# - hosts: lb
+#   become: true
+#   tasks: 
+#    - name: installing and updating repos
+#      apt: name=apache2 state=present update_cache=yes
+
+#    - name: ensure apache2 started
+#      service: name=apache2 state=started enabled=yes
