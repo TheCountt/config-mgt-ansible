@@ -7,14 +7,9 @@
 [nginx]
 172.31.19.120
 
-[db]
-172.31.22.30 ansible_user=ec2-user
-
-[deployments:children]
-tooling
-todo
-nginx
-
-[deployments:vars]
-ansible_user=ubuntu
+[db:vars]
+ansible_user=ec2-user
 ansible_python_interpreter=/usr/bin/python
+
+[db]
+172.31.22.30
