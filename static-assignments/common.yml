@@ -1,6 +1,6 @@
 ---
 # Ansible playbook for standard installations and commands.
-- hosts: nfs,webservers,db,lb
+- hosts: all
   become: true
   tasks:
    - name: installing and updating repos
