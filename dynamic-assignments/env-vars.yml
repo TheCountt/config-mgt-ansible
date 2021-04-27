@@ -3,11 +3,15 @@
  - name: collate variables from env specific file, if it exists
    hosts: all
    tasks:
-      - name: collate variables from env specific file, if it exists
+      - name: looping through list of available files
         include_vars: "{{ item }}"
         with_first_found:
           - files:
-              - "/home/ubuntu/config-mgt-ansible/env_vars/dev.yml"
+              - dev.yml
+              - ci.yml
+              - pentest.yml
+              - uat.yml
+            
             paths:
               - "{{ playbook_dir }}/../env-vars"
 
