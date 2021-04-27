@@ -8,8 +8,4 @@
 172.31.19.120
 
 [db]
-172.31.22.30
-
-[db:vars]
-ansible_user=ec2-user
-ansible_python_interpreter=/usr/bin/python3
+172.31.23.209
