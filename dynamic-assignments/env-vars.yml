@@ -1,11 +1,18 @@
 ---
-- name: collate variables from env specific file, if it exists
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "/home/ubuntu/config-mgt-ansible/env_vars/dev.yml"
 
-  tags:
-    - always
+ - name: collate variables from env specific file, if it exists
+   hosts: all
+   tasks:
+      - name: collate variables from env specific file, if it exists
+        include_vars: "{{ item }}"
+        with_first_found:
+          - files:
+              - "/home/ubuntu/config-mgt-ansible/env_vars/dev.yml"
+            paths:
+              - "{{ playbook_dir }}/../env-vars"
+
+        tags:
+          - always
 
 # - name: collate variables from env specific file, if it exists
 #   hosts: all
