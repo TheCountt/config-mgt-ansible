@@ -15,8 +15,8 @@
       with_first_found:
         - files:
             - dev.yml
-            - prod.yml
-            - stage.yml
+            - ci.yml
+            - pentest.yml
             - uat.yml
           paths:
             - "{{ playbook_dir }}/../env-vars"
