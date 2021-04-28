@@ -1,0 +1,15 @@
+pipeline{
+    agent any
+    stages{
+        stage('SCM Checkout'){
+            steps{
+               git branch: 'main', url: 'https://github.com/TheCountt/config-mgt-ansible' 
+            }
+        }
+        stage('Execute Ansible'){
+            steps{
+               ansiblePlaybook credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '${inventory}', playbook: 'playbooks/site.yml' 
+            }
+        }
+    }
+}
