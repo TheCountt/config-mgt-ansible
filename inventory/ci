@@ -1,14 +1,14 @@
 [jenkins]
-172.31.26.65
+
 
 [nginx]
-172.31.30.95
+
 
 [sonarqube]
-172.31.26.131
+
 
 [artifact_repository]
-172.31.23.68
+
 
 [deployments:children]
 jenkins
