@@ -16,7 +16,7 @@ pipeline{
         }
       stage('SCM Checkout') {
          steps{
-            git branch: 'main', url: 'https://github.com/TheCountt/config-mgt-ansible'
+            git branch: 'main', url: 'https://github.com/TheCountt/config-mgt-ansible.git'
          }
        }
       stage('Prepare Ansible For Execution') {
@@ -26,7 +26,7 @@ pipeline{
      }
       stage('Execute Ansible') {
         steps {
-            ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '${inventory}', playbook: 'playbooks/site.yml'
+            ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${params.inventory_file}', playbook: 'playbooks/site.yml'
         }
       }
       stage('Clean Workspace after build'){
