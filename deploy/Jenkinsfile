@@ -26,7 +26,7 @@ pipeline{
      }
       stage('Execute Ansible') {
         steps {
-            ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/sit', playbook: 'playbooks/site.yml'
+            ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '${inventory}', playbook: 'playbooks/site.yml'
         }
       }
       stage('Clean Workspace after build'){
