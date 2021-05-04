@@ -4,7 +4,7 @@ pipeline{
       ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
     }
      parameters {
-      string(name: 'inventory_file', defaultValue: 'dev', description: 'selecting the environment')
+      string(name: 'inventory_file', defaultValue: ['dev', 'sit'], description: 'selecting the environment')
           }
    stages{
       stage("Initial cleanup") {
