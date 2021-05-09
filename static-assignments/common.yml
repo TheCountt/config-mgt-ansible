@@ -1,28 +1,35 @@
 ---
 # Ansible playbook for standard installations and commands.
-# - hosts: all
-#   become: true
-#   tasks:
-#    - name: installing and updating repos
-#      apt: update_cache=yes state=present
-
-#    - name: ensure ntp is installed
-#      apt: name=ntp state=present
-
-#    - name: ensure ntp is running 
-#      service: name=ntp state=started enabled=yes
-
 - hosts: all
   become: true
   tasks:
    - name: installing and updating repos
-     dnf: update_cache=yes state=present
+     apt:
+       update_cache: yes
+       state: present
 
    - name: ensure ntp is installed
-     dnf: name=chrony state=present
+     apt:
+       name: ntp
+       state: present
 
    - name: ensure ntp is running 
-     service: name=chronyd state=started enabled=yes
+     service:
+       name: ntp
+       state: started
+       enabled: yes
+
+# - hosts: all
+#   become: true
+#   tasks:
+#    - name: installing and updating repos
+#      dnf: update_cache=yes state=present
+
+#    - name: ensure ntp is installed
+#      dnf: name=chrony state=present
+
+#    - name: ensure ntp is running 
+#      service: name=chronyd state=started enabled=yes
 
 # - hosts: jenkins
 #   tasks:
