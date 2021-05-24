@@ -24,14 +24,14 @@ pipeline{
           sh 'echo ${WORKSPACE}'
         }
      }
-      stage('Execute Ansible') {
+      stage('Execute Ansible Playbook') {
         steps {
-            ansiblePlaybook colorized: true, credentialsId: 'privateKEY', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory_file}', playbook: 'playbooks/site.yml'
+            ansiblePlaybook colorized: true, credentialsId: 'privateKEY', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory_file}', playbook: 'playbooks/site.yml', tags: '${tag}'
         }
       }
       stage('Clean Workspace after build'){
         steps{
-          cleanWs()
+          cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
         }
       }
    }
