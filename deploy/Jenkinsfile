@@ -6,6 +6,13 @@ pipeline{
      parameters {
       string(name: 'inventory_file', defaultValue: '${inventory_file}', description: 'selecting the environment')
           }
+   stage('Update ansible.cfg') {
+          steps {
+            sh ('sudo sed -i -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
+            }
+        }
+      }
+    }       
    stages{
       stage("Initial cleanup") {
           steps {
