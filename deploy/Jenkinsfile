@@ -21,7 +21,7 @@ pipeline{
        }
       stage('Update ansible.cfg') {
           steps {
-            sh ('sudo sed -i -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
+            sh ('sudo sed -iS -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
          }
        }
       stage('Prepare Ansible For Execution') {
