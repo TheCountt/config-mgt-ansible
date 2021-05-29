@@ -1,18 +1,11 @@
 pipeline{
    agent any
    environment {
-      ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
+      cpath="${WORKSPACE}/deploy/ansible.cfg"
     }
      parameters {
       string(name: 'inventory_file', defaultValue: '${inventory_file}', description: 'selecting the environment')
           }
-   stage('Update ansible.cfg') {
-          steps {
-            sh ('sudo sed -i -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
-            }
-        }
-      }
-    }       
    stages{
       stage("Initial cleanup") {
           steps {
@@ -24,6 +17,11 @@ pipeline{
       stage('SCM Checkout') {
          steps{
             git branch: 'main', url: 'https://github.com/TheCountt/config-mgt-ansible.git'
+         }
+       }
+      stage('Update ansible.cfg') {
+          steps {
+            sh ('sudo sed -i -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
          }
        }
       stage('Prepare Ansible For Execution') {
