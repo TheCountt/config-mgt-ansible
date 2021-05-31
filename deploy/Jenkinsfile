@@ -4,7 +4,7 @@ pipeline{
       ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
     }
      parameters {
-      string(name: 'inventory_file', defaultValue: '', description: 'selecting the environment')
+      string(name: 'inventory_file', defaultValue: '${inventory_file}', description: 'selecting the environment')
           }
    stages{
       stage("Initial cleanup") {
@@ -27,7 +27,7 @@ pipeline{
      }
       stage('Execute Ansible Playbook') {
         steps {
-            ansiblePlaybook colorized: true, credentialsId: 'PrivateKEY', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/sit', playbook: 'playbooks/site.yml'
+            ansiblePlaybook colorized: true, credentialsId: 'PrivateKEY', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory_file}', playbook: 'playbooks/site.yml'
         }
       }
       stage('Clean Workspace after build'){
