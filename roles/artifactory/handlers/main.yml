@@ -1,2 +1,6 @@
 ---
 # handlers file for artifactory
+- name: run update
+  apt:
+    update_cache: yes
+    upgrade: yes
