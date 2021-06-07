@@ -1,0 +1,138 @@
+---
+# tasks file for webserver-todo-php
+- name: get EPEL-key
+  rpm_key:
+    state: present
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+
+- name: Install epel repo.
+  yum:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    state: present
+
+- name: get remi_repo_gpg_key
+  rpm_key:
+    state: present
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi
+
+- name: Install remi repo.
+  yum:
+    name: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+    state: present
+
+- name: Enable DNF module
+  command: dnf module enable -y php:{{ php_version }}
+
+- name: install packages and repositories
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - zip
+    - httpd
+    - mysql-server
+    - php
+    - php-cli
+    - php-fpm
+    - php-mysqlnd
+    - php-zip
+    - php-gd
+    - php-mbstring
+    - php-xml
+    - php-common
+
+# - name: start and enable services
+#   service:
+#     name: php-fpm
+#     state: started
+#     enabled: yes
+#   # notify:
+#   #   - restart apache
+
+
+# get php-todo-artifact
+- name: php-todo artifact
+  ansible.builtin.get_url:
+    url: http://{{ artifactory_server }}:8082/artifactory/php-todo/php-todo.zip
+    dest: /home/ec2-user/
+    username: "{{ artifactory_username }}"
+    password: "{{ artifactory_password }}"
+
+- name: unzip artifact
+  ansible.builtin.unarchive:
+    src: /home/ec2-user/php-todo.zip
+    dest: /home/ec2-user/
+    remote_src: yes
+  
+- name: move code to /var/www/html directory
+  shell: cp -r /home/ec2-user/var/lib/jenkins/workspace/{{ item }}/* /var/www/html/
+  with_items:
+    - "php-todo_main"
+
+# - name: edit db connection
+#   shell: |
+#     cd /var/www/html/php-todo_main/ ; php artisan migrate
+
+- name: Touch file
+  ansible.builtin.file:
+    path: /var/www/html/.env
+    state: touch
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: template file
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: '.env.sample' , dest: '/var/www/html/.env' }
+    # - { src: 'vhost.j2', dest: '/etc/httpd/conf.d/todo.conf' }
+
+# verify all variables are updated
+# edit httpd conf DirectoryIndex
+# DirectoryIndex: sets the file that Apache will serve if a directory
+
+
+# edit httpd conf DocumentRoot /var/www/html/public
+- name: edit httpd conf
+  ansible.builtin.lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^# DirectoryIndex: sets the', line: 'DirectoryIndex index.php index.html' }
+    - { regexp: '^DocumentRoot \"/var/www/html\"', line: DocumentRoot "/var/www/html/public" }
+
+# grant 755 permission to laravel storage
+- name: change laravel storage permissions
+  ansible.builtin.file:
+    path: /var/www/html/
+    recurse: yes
+    mode: '0755'
+
+# php artisan key:generate
+# php artisan config:cache
+- name: run php commands
+  shell: "{{ item }}"
+  loop:
+    - "php /var/www/html/artisan migrate --force"
+    - "php /var/www/html/artisan config:cache"
+    - "php /var/www/html/artisan serve &"
+# restart php-fpm, httpd
+- name: restart services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - httpd
+    - php-fpm
+
+# set selinux boolean setsebool -P httpd_can_network_connect 1
+# **NB ansible-galaxy collection install ansible.posix
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes

@@ -1,0 +1,10 @@
+---
+# defaults file for webserver-todo-php
+artifactory_username: admin
+artifactory_server: 52.15.139.194
+artifactory_password: MekkyMayata1
+db_host_ip: 3.133.158.173
+php_version: 7.4
+
+# remi_repo_url: "https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+# remi_repo_gpg_key_url: "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"

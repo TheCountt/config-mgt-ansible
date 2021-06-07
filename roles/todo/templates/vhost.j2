@@ -1,0 +1,11 @@
+<Virtualhost *:80>
+    DocumentRoot "/var/www/html/public"
+    ServerName todo.xi
+    ServerAlias *.todo
+    <Directory "/var/www/html/public/">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+</Virtualhost>
