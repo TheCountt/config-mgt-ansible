@@ -29,17 +29,19 @@
     state: present
   loop:
     - zip
-    - httpd
+    - libapache2-mod-php
     - mysql-server
-    - php
-    - php-cli
-    - php-fpm
-    - php-mysqlnd
-    - php-zip
+    - php7.4-fpm
+    - phploc
+    - php-xml
+    - php-bcmath
+    - php-bz2
+    - php-intl
     - php-gd
     - php-mbstring
-    - php-xml
-    - php-common
+    - php-mysql
+    - php-zip
+    - php-xdebug
 
 # - name: start and enable services
 #   service:
