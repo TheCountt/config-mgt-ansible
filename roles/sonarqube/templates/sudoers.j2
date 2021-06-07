@@ -1,0 +1,5 @@
+{% for item in BASE_GROUPS %}
+    {% if item.group == "admins" %}
+        %{{ item.group }} ALL=(ALL:ALL) NOPASSWD:ALL
+    {% endif %}
+{% endfor %}
