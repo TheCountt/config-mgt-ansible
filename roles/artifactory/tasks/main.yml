@@ -1,2 +1,39 @@
 ---
 # tasks file for artifactory
+- name: run update
+  apt:
+    update_cache: true
+    upgrade: true
+
+- name: install package(s)
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: 
+    - gnupg2
+  notify: 
+    - run update
+
+- name: Add APT signing key
+  ansible.builtin.apt_key:
+    url: https://api.bintray.com/orgs/jfrog/keys/gpg/public.key
+    state: present
+
+- name: add Jfrog Artifactory Repository
+  shell: echo "deb https://jfrog.bintray.com/artifactory-debs bionic main" | tee /etc/apt/sources.list.d/jfrog.list
+
+- name: run update
+  apt:
+    update_cache: true
+    upgrade: true
+
+- name: install jfrog-artifactory-oss
+  apt:
+    name: jfrog-artifactory-oss
+    state: present
+
+- name: start and enable artifactory
+  service:
+    name: artifactory
+    state: started
+    enabled: yes
