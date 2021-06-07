@@ -1,0 +1,69 @@
+- name: download installation files
+  ansible.builtin.get_url:
+    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.9.3.zip
+    dest: /tmp
+
+- name: unzip sonarqube
+  ansible.builtin.unarchive:
+    src: /tmp/sonarqube-7.9.3.zip
+    dest: /opt/
+    remote_src: yes
+
+- name: Create /opt/sonarqube directory if it does not exist
+  ansible.builtin.file:
+    path: /opt/sonarqube
+    state: directory
+    mode: '0755'
+
+- name: Move sonarqube
+  shell: cp -r /opt/sonarqube-7.9.3/* /opt/sonarqube
+  when: move_sonar == "yes"
+
+- name: Ensure group "sonar" exists
+  ansible.builtin.group:
+    name: sonar
+    state: present
+
+- name: Add a sonar user
+  ansible.builtin.user:
+    name: sonar
+    home: /opt/sonarqube
+    comment: user to run SonarQube
+    shell: /bin/bash
+    groups: sonar,sudo
+
+- name: Recursively change ownership of a sonarqube home
+  ansible.builtin.file:
+    path: /opt/sonarqube
+    state: directory
+    recurse: yes
+    owner: sonar
+    group: sonar
+
+- name: replace sonarqube properties
+  ansible.builtin.lineinfile:
+    path: /opt/sonarqube/conf/sonar.properties
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^#sonar.jdbc.username=', line: 'sonar.jdbc.username=sonar' }
+    - { regexp: '^#sonar.jdbc.password=', line: 'sonar.jdbc.password=sonar' }
+    - { regexp: '^(#sonar.jdbc.url=jdbc:postgresql).', line: 'sonar.jdbc.url=jdbc:postgresql://localhost:5432/sonarqube' }
+
+- name: edit sonar script file
+  ansible.builtin.lineinfile:
+    path: /opt/sonarqube/bin/linux-x86-64/sonar.sh
+    regexp: '^#RUN_AS_USER='
+    line: RUN_AS_USER=sonar
+
+- name: template sonar_service file
+  ansible.builtin.template:
+    src: sonar_service.j2
+    dest: /etc/systemd/system/sonar.service
+    owner: sonar
+
+- name: start and enable sonar
+  service:
+    name: sonar
+    state: started
+    enabled: yes
