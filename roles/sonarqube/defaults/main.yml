@@ -1,2 +1,20 @@
 ---
 # defaults file for sonarqube
+vm_max_map_count: 262144
+fs_file_max: 65536
+max_no_open_file_descriptors: 65536
+max_no_of_user_processes: 4096
+
+apt_packages:
+- wget
+- unzip
+- openjdk-11-jdk
+- openjdk-11-jre
+- python3-dev
+
+postgres_username: postgres
+linux_postgres_password: password
+assigned_role: no
+postgres_auth_method: md5
+
+lsb_release: focal
