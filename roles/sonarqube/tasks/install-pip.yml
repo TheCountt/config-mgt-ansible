@@ -1,0 +1,11 @@
+---
+---
+
+- name: get pip install script
+  ansible.builtin.get_url:
+    url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+    dest: /home/ec2-user/get-pip.py
+  
+- name: run script
+  command: python2 /home/ec2-user/get-pip.py
+  when: run_pip_script == 1
