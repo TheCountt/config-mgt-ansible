@@ -1,0 +1,59 @@
+---
+- name: get RPM-key
+  rpm_key:
+    state: present
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+
+- name: get EPEL-key
+  rpm_key:
+    state: present
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+
+- name: Install epel repo.
+  yum:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
+    state: present
+
+- name: Install remi repo.
+  yum:
+    name: "http://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+    state: present
+
+- name: Enable DNF module
+  shell: dnf module enable -y php:remi-8.0
+  
+- name: install packages and repositories
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - mysql
+    - php
+    - php-cli
+    - php-common
+    - php-gd
+    - php-mysqlnd
+
+- name: start and enable services
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+  notify:
+    - restart apache
+
+
+# clone repo
+- name: Clone tooling repo
+  ansible.builtin.git:
+    repo: https://github.com/MekkyMayata/tooling.git
+    dest: /home/ec2-user/tooling
+  
+- name: move code to /var/www/html directory
+  command: cp -r /home/ec2-user/tooling/{{ item }} /var/www/html/
+  with_items:
+    - "html/."
+
+- name: edit db connection
+  shell: sed -i "s/'mysql.tooling.svc.cluster.local', 'admin', 'admin', 'tooling'/'172.31.0.15', 'webaccess', 'password', 'tooling'/" /var/www/html/functions.php
