@@ -1,0 +1,16 @@
+---
+- name: play for artifact_repository hosts
+  gather_facts: no # due to python interpreter /usr/bin/python absent
+  hosts: artifact_repository
+  become: yes
+
+  pre_tasks:
+    - name: Install Python if not already present.
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python)
+      changed_when: False
+
+    - name: Gather facts after Python is definitely present.
+      setup:
+
+  roles:
+    - artifactory
