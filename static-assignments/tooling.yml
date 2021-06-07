@@ -1,0 +1,6 @@
+---
+- hosts: tooling
+  become: true
+
+  roles:
+    - apache
