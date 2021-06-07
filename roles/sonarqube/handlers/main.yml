@@ -1,2 +1,13 @@
 ---
 # handlers file for sonarqube
+- name: reload system settings
+  shell: sysctl --system
+
+- name: java version
+  shell: java -version
+
+- name: apt update and upgrade
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 0
