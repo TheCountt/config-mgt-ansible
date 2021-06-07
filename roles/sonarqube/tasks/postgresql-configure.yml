@@ -1,0 +1,79 @@
+- name: Touch repo file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/pgdg.list
+    state: touch
+    mode: '0644'
+    owner: root
+    group: root
+  
+- name: template postgresql pg_hba.conf (for postgres user auth)
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "postgresql-repo-list.j2", dest: "/etc/apt/sources.list.d/pgdg.list" }
+
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc 
+    state: present
+
+- name: install postgresql db server and neccessary packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - postgresql 
+    - postgresql-contrib
+    - python-setuptools
+    - python3-pip
+    - libpq-dev 
+    - python-dev
+    - python2
+  
+- name: template postgresql pg_hba.conf (for postgres user auth)
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "postgres_pg_hba.j2", dest: "/etc/postgresql/13/main/pg_hba.conf" }
+  
+- name: Creating user postgres without admin access
+  user:
+    name: "{{ postgres_username }}"
+    password: "{{ password | password_hash('sha512') }}"
+  when: assigned_role == "no"
+
+- name: start and enable postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+# install pip2 here
+- name: Make sure psycopg2 is installed (subsequent step requires it)
+  pip:
+    name: psycopg2
+    state: present
+
+- name: Create a new database with name "sonarqube"
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: sonarqube
+
+- name: Create sonar user
+  become_user: postgres
+  postgresql_user:
+    name: sonar
+    password: sonar
+    encrypted: yes
+
+- name: GRANT ALL PRIVILEGES ON sonarqube db to sonar
+  become_user: postgres
+  community.postgresql.postgresql_privs:
+    db: sonarqube
+    privs: ALL
+    type: database
+    # objs: ALL_IN_SCHEMA
+    role: sonar
