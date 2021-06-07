@@ -1,0 +1,7 @@
+# manage symbolic link using 'update-alternatives'
+- name: SET Default JDK 
+  community.general.alternatives:
+    name: java
+    path: /usr/lib/jvm/java-11-openjdk-amd64/jre/bin/java
+  notify:
+    - java version
