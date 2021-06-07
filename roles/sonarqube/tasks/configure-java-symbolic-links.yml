@@ -1,3 +1,4 @@
+---
 # manage symbolic link using 'update-alternatives'
 - name: SET Default JDK 
   community.general.alternatives:

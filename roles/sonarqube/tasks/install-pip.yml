@@ -1,6 +1,4 @@
 ---
----
-
 - name: get pip install script
   ansible.builtin.get_url:
     url: https://bootstrap.pypa.io/pip/2.7/get-pip.py

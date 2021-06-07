@@ -1,3 +1,4 @@
+---
 # Tune Linux Kernel
 - name: set vm maximum map count
   command: bash -c "echo {{ vm_max_map_count }} > /proc/sys/vm/max_map_count"
