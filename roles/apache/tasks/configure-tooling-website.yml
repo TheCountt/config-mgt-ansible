@@ -47,7 +47,7 @@
 # clone repo
 - name: Clone tooling repo
   ansible.builtin.git:
-    repo: https://github.com/MekkyMayata/tooling.git
+    repo: https://github.com/TheCountt/tooling.git
     dest: /home/ec2-user/tooling
   
 - name: move code to /var/www/html directory
